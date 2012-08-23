@@ -15,8 +15,28 @@ adapted from: http://www.dio5.com/blog/limiting-subpages-in-silverstripe/
 
 ## Usage
 
-class SubPageHolder extends Page {
-	...
-	static $extensions = array("ExcludeChildren");
-	static $ExcludeChildren = array('SubPage', 'Another');
-	...
+	class SubPageHolder extends Page {
+		...
+		static $extensions = array("ExcludeChildren");
+		static $ExcludeChildren = array('SubPage', 'AnotherPageType_Extending_Page');
+		...
+
+Then, add a GridField instead to create/edit subpages:
+
+	$gridFieldConfig = GridFieldConfig::create()->addComponents(
+		new GridFieldToolbarHeader(),
+		new GridFieldAddNewButton('toolbar-header-right'),
+		new GridFieldSortableHeader(),
+		new GridFieldDataColumns(),
+		new GridFieldPaginator(20),
+		new GridFieldEditButton(),
+		new GridFieldDeleteAction(),
+		new GridFieldDetailForm()
+	);
+	$gridField = new GridField("SubPages", "SubPages of this page", 
+			$this->SubPages(), $gridFieldConfig);
+	$fields->addFieldToTab("Root.SubPages", $gridField);
+
+## @TODO
+
+If anyone knows of a way to have the page's edit form appear with the normal Settings & History tab, that'd be awesome!
