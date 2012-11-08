@@ -18,8 +18,8 @@
  * Or externally via _config.php:
  * 
  * <code>
- * Object::add_extension("BlogHolder", "ExcludeChildren");
- * Config::inst()->update("BlogHolder", "excluded_children", array("BlogEntry"));
+ * 	Object::add_extension("BlogHolder", "ExcludeChildren");
+ * 	Config::inst()->update("BlogHolder", "excluded_children", array("BlogEntry"));
  * </code>
  * 
  * @author Michael van Schaik, Restruct. <substr($firstname,0,3)@restruct-web.nl>
@@ -36,8 +36,8 @@ class ExcludeChildren extends Hierarchy{
 		$this->hiddenChildren = $this->owner->config()->get("excluded_children");
 		return $this->hiddenChildren;
 	}
-    
-    public function stageChildren($showAll = false) {
+	
+	public function stageChildren($showAll = false) {
 		$staged = parent::stageChildren($showAll);
 		$staged->exclude('ClassName', $this->getExcludedClasses());
 		return $staged;
