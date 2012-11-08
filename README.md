@@ -18,7 +18,7 @@ adapted from: http://www.dio5.com/blog/limiting-subpages-in-silverstripe/
 	class SubPageHolder extends Page {
 		...
 		static $extensions = array("ExcludeChildren");
-		static $ExcludeChildren = array('SubPage', 'AnotherPageType_Extending_Page');
+		static $excluded_children = array('SubPage', 'AnotherPageType_Extending_Page');
 		...
 
 Then, add a GridField instead to create/edit subpages:
