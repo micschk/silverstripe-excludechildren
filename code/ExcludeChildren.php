@@ -39,13 +39,13 @@ class ExcludeChildren extends Hierarchy{
 	
 	public function stageChildren($showAll = false) {
 		$staged = parent::stageChildren($showAll);
-		$staged->exclude('ClassName', $this->getExcludedClasses());
+		$staged = $staged->exclude('ClassName', $this->getExcludedClasses());
 		return $staged;
 	}
 	
 	public function liveChildren($showAll = false, $onlyDeletedFromStage = false) {
 		$staged = parent::liveChildren($showAll, $onlyDeletedFromStage);
-		$staged->exclude('ClassName', $this->getExcludedClasses());
+		$staged = $staged->exclude('ClassName', $this->getExcludedClasses());
 		return $staged;
 	}
 	
