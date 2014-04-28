@@ -33,7 +33,14 @@ class ExcludeChildren extends Hierarchy{
 	protected $hiddenChildren = array();
 
 	public function getExcludedClasses(){
-		$this->hiddenChildren = $this->owner->config()->get("excluded_children");
+		$configClasses = $this->owner->config()->get("excluded_children");
+		$hiddenChildren = array();
+		if ($configClasses) {
+			foreach ($configClasses as $class) {
+				$hiddenChildren = array_merge($hiddenChildren, array_values(ClassInfo::subclassesFor($class)));
+			}
+		}
+		$this->hiddenChildren = $hiddenChildren; 
 		return $this->hiddenChildren;
 	}
 	
