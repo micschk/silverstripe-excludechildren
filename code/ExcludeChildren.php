@@ -33,9 +33,8 @@ class ExcludeChildren extends Hierarchy{
 	protected $hiddenChildren = array();
 
 	public function getExcludedClasses(){
-		$configClasses = $this->owner->config()->get("excluded_children");
 		$hiddenChildren = array();
-		if ($configClasses) {
+		if ($configClasses = $this->owner->config()->get("excluded_children")) {
 			foreach ($configClasses as $class) {
 				$hiddenChildren = array_merge($hiddenChildren, array_values(ClassInfo::subclassesFor($class)));
 			}
@@ -44,22 +43,19 @@ class ExcludeChildren extends Hierarchy{
 		return $this->hiddenChildren;
 	}
 	
-	public function stageChildren($showAll = false) {
-		$staged = parent::stageChildren($showAll);
+	public function getFilteredChildren($staged){
 		$action = Controller::curr()->getAction();
-		if(in_array($action, array('treeview','getsubtree'))) {
+		if (in_array($action, array('treeview','getsubtree'))) {
 			$staged = $staged->exclude('ClassName', $this->getExcludedClasses());
 		}
-		return $staged;
+		return $staged->sort('Created', 'desc');
 	}
-	
-	public function liveChildren($showAll = false, $onlyDeletedFromStage = false) {
-		$staged = parent::liveChildren($showAll, $onlyDeletedFromStage);
-		$action = Controller::curr()->getAction();
-		if(in_array($action, array('treeview','getsubtree'))) {
-			$staged = $staged->exclude('ClassName', $this->getExcludedClasses());
-		}
-		return $staged;
-	}
-	
+
+    public function stageChildren($showAll = false){
+		return $this->getFilteredChildren(parent::stageChildren($showAll));
+    }
+
+    public function liveChildren($showAll = false, $onlyDeletedFromStage = false){
+		return $this->getFilteredChildren(parent::liveChildren($showAll, $onlyDeletedFromStage));
+    }
 }
