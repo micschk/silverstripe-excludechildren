@@ -66,7 +66,7 @@ Then, add a GridField instead to create/edit subpages
 ## Pro tip
 
 Add GridfieldSitetreebuttons to your gridfieldconfig to edit the pages in their regular edit forms:
-* silverstripe-gridfieldsitetreebuttons (https://github.com/micschk/silverstripe-gridfieldsitetreebuttons)
+* [silverstripe-gridfieldsitetreebuttons](https://github.com/micschk/silverstripe-gridfieldsitetreebuttons)
 
 Or use/subclass the preconfigured GridfieldPages module, which contains both excludechildren and sitetreebuttons:
-* silverstripe-gridfieldpages (https://github.com/micschk/silverstripe-gridfieldpages)
+* [silverstripe-gridfieldpages](https://github.com/micschk/silverstripe-gridfieldpages)
