@@ -1,19 +1,40 @@
-# ExcludeChildren Module
+Extension to hide pages from the SiteTree
+=========================================
+
+This extension hides pages from the sitetree
+
+## Features
+
+  * Configurable subpage classes (children) to be hidden under parent page in the sitetree
 
 ## Requirements
 
  * SilverStripe 3.0 or newer
 
-## Introduction
 
-Provides an extension to limit subpages shown in sitetree,
-adapted from: http://www.dio5.com/blog/limiting-subpages-in-silverstripe/
+## Screenshot
+*Hide SiteTree items from from the sitetree (and manage them from a GridField):*
+![](images/screenshots/holderscreen.png)
 
-## Features
 
-  * Configure page classes to hide under current page
+## Installation
+
+```
+composer require micschk/silverstripe-excludechildren dev-master
+```
 
 ## Usage
+
+In config.yml:
+
+	SubPageHolder:
+	  extensions:
+		- 'ExcludeChildren'
+	  excluded_children:
+		- 'SubPage'
+		- 'AnotherPageType'
+
+Or in your Page class (php):
 
 	class SubPageHolder extends Page {
 		...
@@ -21,10 +42,10 @@ adapted from: http://www.dio5.com/blog/limiting-subpages-in-silverstripe/
 		static $excluded_children = array('SubPage', 'AnotherPageType_Extending_Page');
 		...
 
-### Or externally via _config.php:
+Or externally via _config.php:
 
-		Object::add_extension("BlogHolder", "ExcludeChildren");
-		Config::inst()->update("BlogHolder", "excluded_children", array("BlogEntry"));
+		Object::add_extension("SubPageHolder", "ExcludeChildren");
+		Config::inst()->update("SubPageHolder", "excluded_children", array("BlogEntry"));
 
 Then, add a GridField instead to create/edit subpages
 
@@ -42,13 +63,10 @@ Then, add a GridField instead to create/edit subpages
 			$this->SubPages(), $gridFieldConfig);
 	$fields->addFieldToTab("Root.SubPages", $gridField);
 
-## @TODO
+## Pro tip
 
-If anyone knows of a way to have the page's edit form appear with the normal Settings & History tab, that'd be awesome!
+Add GridfieldSitetreebuttons to your gridfieldconfig to edit the pages in their regular edit forms:
+* silverstripe-gridfieldsitetreebuttons (https://github.com/micschk/silverstripe-gridfieldsitetreebuttons)
 
-UPDATE: Icecaster's pulled together such a form: 
-* VersionedGridFieldDetailForm ( https://github.com/icecaster/silverstripe-versioned-gridfield ) 
-
-It can (optionally) be used together with:
-* silverstripe-largeblog (https://github.com/icecaster/silverstripe-largeblog)
-A customised modeladmin interface for managing Blog Entries on large silverstripe sites 
+Or use/subclass the preconfigured GridfieldPages module, which contains both excludechildren and sitetreebuttons:
+* silverstripe-gridfieldpages (https://github.com/micschk/silverstripe-gridfieldpages)
