@@ -2,30 +2,9 @@
 /**
  * Provides an extension to limit subpages shown in sitetree,
  * adapted from: http://www.dio5.com/blog/limiting-subpages-in-silverstripe/
- *
- * Features:
- * - Configure page classes to hide under current page
- * 
- * Example from within a class:
- * <code>
- * class SubPageHolder extends Page {
- *		...
- *		static $extensions = array("ExcludeChildren");
- *		static $excluded_children = array('SubPage', 'Another');
- *		...
- * </code>
- * 
- * Or externally via _config.php:
- * 
- * <code>
- * 	Object::add_extension("BlogHolder", "ExcludeChildren");
- * 	Config::inst()->update("BlogHolder", "excluded_children", array("BlogEntry"));
- * </code>
  * 
  * @author Michael van Schaik, Restruct. <mic@restruct.nl>
  * @author Tim Klein, Dodat Ltd <$firstname@dodat.co.nz>
- * @package Hierarchy
- * @subpackage HideChildren
  */
 
 class ExcludeChildren extends DataExtension {
