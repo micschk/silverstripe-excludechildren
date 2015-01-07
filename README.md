@@ -1,11 +1,11 @@
 Extension to hide pages from the SiteTree
 =========================================
 
-This extension hides pages from the sitetree
+This extension hides specific pageclasses from the sitetree.
 
 ## Features
 
-  * Configurable subpage classes (children) to be hidden under parent page in the sitetree
+  * Configure childpages (children) to be hidden from the sitetree under their parent page
 
 ## Requirements
 
@@ -13,7 +13,7 @@ This extension hides pages from the sitetree
 
 
 ## Screenshot
-*Hide SiteTree items from from the sitetree (and manage them from a GridField):*
+*Hide SiteTree items from from the sitetree (and, with some extra code/modules, manage them from a GridField):*
 ![](images/screenshots/holderscreen.png)
 
 

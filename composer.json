@@ -1,6 +1,6 @@
 {
     "name": "micschk/silverstripe-excludechildren",
-    "description": "Provides an extension to limit subpages shown in sitetree",
+    "description": "Extension to hide pages from the SiteTree",
     "type": "silverstripe-module",
     "keywords": ["silverstripe", "excludechildren", "sitetree"],
     "authors": [
