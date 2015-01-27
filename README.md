@@ -56,21 +56,32 @@ Or externally via _config.php:
 		Config::inst()->update("SubPageHolder", "excluded_children", array("BlogEntry"));
 ```
 
-Then, add a GridField instead to create/edit subpages
+###Then, add a GridField instead to create/edit subpages
+(See Gridfieldpages module below for a turnkey solution/example)
 ```php
 	$gridFieldConfig = GridFieldConfig::create()->addComponents(
 		new GridFieldToolbarHeader(),
-		new GridFieldAddNewButton('toolbar-header-right'),
+		new GridFieldAddNewSiteTreeItemButton('toolbar-header-right'), // GridfieldSitetreebuttons module
 		new GridFieldSortableHeader(),
-		new GridFieldDataColumns(),
+		new GridFieldFilterHeader(),
+		$dataColumns = new GridFieldDataColumns(),
 		new GridFieldPaginator(20),
-		new GridFieldEditButton(),
-		new GridFieldDeleteAction(),
-		new GridFieldDetailForm()
+		new GridFieldEditSiteTreeItemButton(), // GridfieldSitetreebuttons module
+		new GridFieldOrderableRows() // Gridfieldextensions module, default 'Sort' is equal to page sort field...
 	);
-	$gridField = new GridField("SubPages", "SubPages of this page", 
-			$this->SubPages(), $gridFieldConfig);
-	$fields->addFieldToTab("Root.SubPages", $gridField);
+	$dataColumns->setDisplayFields(array(
+		'Title' => 'Title',
+		'URLSegment'=> 'URL',
+		//'getStatus' => 'Status', // Implement getStatus() on child page class, see gridfieldpages module for an example
+		'LastEdited' => 'Changed',
+	));
+	// use gridfield as normal
+	$gridField = new GridField(
+		"SubPages", # Can be any name, field doesn't have to exist on model...
+		"SubPages of this page", 
+        SiteTree::get()->filter('ParentID', $this->ID),
+		$gridFieldConfig);
+    $fields->addFieldToTab("Root.SubPages", $gridField);
 ```
 
 ## Looping over $Children in templates
@@ -107,5 +118,5 @@ Things to check if your pages are not showing up in $Children:
 Add GridfieldSitetreebuttons to your gridfieldconfig to edit the pages in their regular edit forms:
 * [silverstripe-gridfieldsitetreebuttons](https://github.com/micschk/silverstripe-gridfieldsitetreebuttons)
 
-Or use/subclass the preconfigured GridfieldPages module, which contains both excludechildren and sitetreebuttons:
+Or use/subclass the preconfigured GridfieldPages module, which contains both excludechildren, sitetreebuttons, sorting and publication status:
 * [silverstripe-gridfieldpages](https://github.com/micschk/silverstripe-gridfieldpages)
