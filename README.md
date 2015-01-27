@@ -1,11 +1,7 @@
 Extension to hide pages from the SiteTree
 =========================================
 
-This extension hides specific pageclasses from the sitetree.
-
-## Features
-
-  * Configure childpages (children) to be hidden from the sitetree under their parent page
+Configure childpages (children) to be hidden from the sitetree under their parent page
 
 ## Requirements
 
@@ -45,19 +41,23 @@ SubPageHolder:
 
 Or in your Page class (php):
 
+```php
 	class SubPageHolder extends Page {
 		...
 		static $extensions = array("ExcludeChildren");
 		static $excluded_children = array('SubPage', 'AnotherPageType_Extending_Page');
 		...
+```
 
 Or externally via _config.php:
 
+```php
 		Object::add_extension("SubPageHolder", "ExcludeChildren");
 		Config::inst()->update("SubPageHolder", "excluded_children", array("BlogEntry"));
+```
 
 Then, add a GridField instead to create/edit subpages
-
+```php
 	$gridFieldConfig = GridFieldConfig::create()->addComponents(
 		new GridFieldToolbarHeader(),
 		new GridFieldAddNewButton('toolbar-header-right'),
@@ -71,7 +71,7 @@ Then, add a GridField instead to create/edit subpages
 	$gridField = new GridField("SubPages", "SubPages of this page", 
 			$this->SubPages(), $gridFieldConfig);
 	$fields->addFieldToTab("Root.SubPages", $gridField);
-
+```
 
 ## Looping over $Children in templates
 
