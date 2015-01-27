@@ -25,14 +25,23 @@ composer require micschk/silverstripe-excludechildren dev-master
 
 ## Usage
 
-In config.yml:
+In config.yml (best):
 
-	SubPageHolder:
-	  extensions:
-		- 'ExcludeChildren'
-	  excluded_children:
-		- 'SubPage'
-		- 'AnotherPageType'
+```yaml
+---
+Only:
+  classexists: 'ExcludeChildren'
+---
+SubPageHolder:
+  extensions:
+	- 'ExcludeChildren'
+  excluded_children:
+	- 'SubPage'
+	- 'AnotherPageType'
+  # optionally exclude from theme $Children as well (set to true if desired, default only from CMS)
+  # eg. to exclude pre-existing child pages with 'show in menus' = true
+  force_exclusion_beyond_cms: false
+```
 
 Or in your Page class (php):
 
@@ -62,6 +71,36 @@ Then, add a GridField instead to create/edit subpages
 	$gridField = new GridField("SubPages", "SubPages of this page", 
 			$this->SubPages(), $gridFieldConfig);
 	$fields->addFieldToTab("Root.SubPages", $gridField);
+
+
+## Looping over $Children in templates
+
+This module only hides child pages from the CMS sitetree by default. So you can just use $Children as usual in your theme. Child pages will also be available when creating links to pages from the CMS editor. 
+
+When excluding pages from the front-end as well (force_exclusion_beyond_cms), you can add an alternative getter to your Holder:
+
+```php
+	public function SortedChildren(){
+		return SiteTree::get()->filter('ParentID', $this->ID)->sort('Sort');
+	}
+```
+
+Or, paginated:
+
+```php
+	public function PaginatedChildren(){
+		$children = SiteTree::get()->filter('ParentID', $this->ID);
+		$ctrlr = Controller::curr();
+		$children = new PaginatedList($children, $ctrlr->request);
+		$children->setPageLength(10);
+		return $children;
+	}
+```
+
+Things to check if your pages are not showing up in $Children:
+- is force_exclusion_beyond_cms set to false (or use custom getter)?
+- are your child pages set to appear in menu's (show in menu's)?
+
 
 ## Pro tip
 
