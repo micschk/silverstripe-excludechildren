@@ -22,16 +22,19 @@ class ExcludeChildren extends DataExtension {
 		return $this->hiddenChildren;
 	}
 	
-	public function getFilteredChildren($staged){
-		$action = Controller::curr()->getAction();
-		if (in_array($action, array('treeview','getsubtree'))) {
-			return $staged->exclude('ClassName', $this->getExcludedClasses());
+	public function getFilteredChildren($children){
+		// Optionally force exclusion beyond CMS (eg. exclude from $Children as well)
+		if( $this->owner->config()->get("force_exclusion_beyond_cms") 
+				&& get_class(Controller::curr()) != "CMSPagesController" // default CMS controller
+				&& get_class(Controller::curr()) != "CMSPageEditController"){ // default CMS edit controller
+			return $children->exclude('ClassName', $this->getExcludedClasses());
 		}
-		return $staged;
-		
-		// Another interesting approach, limiting filtering to only the CMS:
-		// get_class($controller) == "CMSPagesController"
-		// && in_array($controller->getAction(), array("treeview", "listview", "getsubtree"));
+		// Else; exclude children from CMS only
+		$action = Controller::curr()->getAction();
+		if (in_array($action, array("treeview", "listview", "getsubtree"))) {
+			return $children->exclude('ClassName', $this->getExcludedClasses());
+		}
+		return $children;
 	}
 
     public function stageChildren($showAll = false){
