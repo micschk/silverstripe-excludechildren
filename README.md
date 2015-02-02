@@ -111,6 +111,11 @@ Or, paginated:
 Things to check if your pages are not showing up in $Children:
 - is force_exclusion_beyond_cms set to false (or use custom getter)?
 - are your child pages set to appear in menu's (show in menu's)?
+- 
+
+## Customising your children
+
+If you need to customise your hidden children by more than just classname you can implement the `getExcludedChildren` which needs to return a `DataList` of the children *to show* in the SiteTree.
 
 
 ## Pro tip
