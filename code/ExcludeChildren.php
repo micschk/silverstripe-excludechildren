@@ -26,8 +26,14 @@ class ExcludeChildren extends DataExtension {
 		// Optionally force exclusion beyond CMS (eg. exclude from $Children as well)
 		$controller = Controller::curr();
 		$action = $controller->getAction();
+
+		// Check for TreeDropdownField's "tree" allowed_action
+		$allParams = ($controller) ? $controller->getRequest()->allParams() : array();
+		$treeDropdownFieldAction = ($allParams && isset($allParams['Action'])) ? $allParams['Action'] : null;
+
 		if ($this->owner->config()->get("force_exclusion_beyond_cms")
-			|| ($controller instanceof LeftAndMain) && in_array($action, array("treeview", "listview", "getsubtree"))
+			|| ($controller instanceof LeftAndMain
+				&& ($treeDropdownFieldAction === 'tree' || in_array($action, array('treeview', 'listview', 'getsubtree'))))
 		) {
 			//if the page class has a getExcludedChildren function, use it to supply the list of children
 			if ($this->owner->hasMethod('getExcludedChildren')) {
