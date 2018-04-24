@@ -8,7 +8,7 @@
         "name": "micschk"
     }],
     "require": {
-        "silverstripe/framework": "~3.0"
+        "silverstripe/cms": ">=3.0 <3.5"
     },
 	"extra": {
 		"installer-name": "excludechildren"

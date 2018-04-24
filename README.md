@@ -3,9 +3,78 @@ Extension to hide pages from the SiteTree
 
 Configure childpages (children) to be hidden from the sitetree under their parent page
 
+# Replaced by core functionality in SS3.5+
+
+Since comparable functionality has ben added to SilverStripe framework (Hierarchy), I'm not updating this module to SS4.
+I recommend simply uninstalling this module from SS3.5 onward and updating your config as follows instead:
+
+## Configuring hidden pages in SS3.5+
+
+### $hide_from_cms_tree hides in CMS, not in front-end
+
+**Hiding pagetypes in the CMS, in general**
+```yaml
+SilverStripe\ORM\Hierarchy\Hierarchy:
+  hide_from_cms_tree:
+    - 'PageClassToHide'
+```
+
+**Hiding pagetypes in the CMS, only if sub-page of a 'holder' pagetype**
+```yaml
+HiddenPageHolderClass:
+  hide_from_cms_tree:
+    - 'PageClassToHide'
+```
+
+### $hide_from_hierarchy hides both in CMS & front-end
+
+**Hiding page types in both the CMS & Front-end, in general**
+```yaml
+SilverStripe\ORM\Hierarchy\Hierarchy:
+  hide_from_hierarchy:
+    - 'PageClassToHide'
+```
+
+**Hiding page types in both the CMS & Front-end, only if sub-page of a 'holder' pagetype**
+```yaml
+HiddenPageHolderClass:
+  hide_from_hierarchy:
+    - 'PageClassToHide'
+```
+
+## Managing 'hidden' pages in SS3.5+
+
+Manage hidden pages using a Gridfield (see: [silverstripe-gridfieldsitetreebuttons](https://github.com/micschk/silverstripe-gridfieldsitetreebuttons)) on the holder page or use a ModelAdmin or similar.
+
+Of course there's also the very inspir<del>ed</del>ing Lumberjack module (but you've probably seen that being plugged already)... (/sarcasm)
+
+## Getting 'hidden' pages in front-end
+
+If using ```$hide_from_hierarchy```, hidden pages will not be included in ```$Children``` loops. Instead, they can be queries using something like:
+
+```php
+	public function HiddenChildren(){
+		return SiteTree::get()->filter('ParentID', $this->ID)->sort('Sort');
+	}
+```
+
+Or, paginated:
+
+```php
+	public function PaginatedChildren(){
+		$children = SiteTree::get()->filter('ParentID', $this->ID);
+		$ctrlr = Controller::curr();
+		$children = new PaginatedList($children, $ctrlr->request);
+		$children->setPageLength(10);
+		return $children;
+	}
+```
+
+# Legacy: using excludechildren module (in SS<3.5)
+
 ## Requirements
 
- * SilverStripe 3.0 or newer
+ * SilverStripe 3.0 or newer (<3.5)
 
 
 ## Screenshot
