@@ -1,11 +1,6 @@
-Extension to hide pages from the SiteTree
-=========================================
-
-Configure childpages (children) to be hidden from the sitetree under their parent page.
-
 # Replaced by core functionality in SS3.5+
 
-Thanks to everyone who installed this module (almost 16.5K installs).
+**Thanks to everyone who installed this extension to hide pages from the SiteTree (almost 16.5K composer installs since 2012).**
 Since comparable functionality has ben added to SilverStripe framework (Hierarchy), I'm not updating this module to SS4.
 
 I've tagged a 2.0 release marking incompatibility from SS3.5 upwards (in composer), this should prompt users to migrate to core functionality as described below. I'll leave this repo as-is so please open a ticket if this causes any problems for you and I'll to my best to sort things out.
